@@ -6,7 +6,7 @@ Allows dynamic scheduling of music lessons where timetable clashes with school l
 ## Dev setup
 - requires python 3.8+
 - strongly recommend windows machine
-- requires a functioning mysql server setup
+- requires a functioning [mysql](https://dev.mysql.com/downloads/mysql/) server setup 
 
 - open mysql line client
 - enter `create database musicschedulerdb;`
