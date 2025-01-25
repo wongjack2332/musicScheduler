@@ -1,0 +1,107 @@
+CREATE DATABASE musicschedulerdb;
+USE musicschedulerdb;
+
+CREATE TABLE users (
+    userid INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(50) NOT NULL,
+    firstname VARCHAR(50),
+    lastname VARCHAR(50),
+    userType Enum("Student", "MusicTeacher", "SchoolTeacher")
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE students (
+    studentid INT PRIMARY KEY AUTO_INCREMENT,
+    year INT CHECK (year >= 7 AND year <= 13),
+    userid INT UNIQUE,
+    schooltimetableid INT UNIQUE,
+    musictimetableid INT UNIQUE,
+    FOREIGN KEY (userid) REFERENCES users(userid),
+    FOREIGN KEY (schooltimetableid) REFERENCES schooltimetable(schooltimetableid),
+    FOREIGN KEY (musictimetableid) REFERENCES musictimetable(musictimetableid)
+);
+
+
+CREATE TABLE musicteachers (
+    musicteacherid INT PRIMARY KEY AUTO_INCREMENT,
+    musictimetableid INT UNIQUE,
+    userid INT UNIQUE,
+    FOREIGN KEY (userid) REFERENCES users(userid),
+    FOREIGN KEY (musictimetableid) REFERENCES musictimetable(musictimetableid)
+);
+
+CREATE TABLE schoolteachers (
+    schoolteacherid INT PRIMARY KEY AUTO_INCREMENT,
+    schooltimetableid INT UNIQUE,
+    userid INT UNIQUE,
+    FOREIGN KEY (userid) REFERENCES users(userid),
+    FOREIGN KEY (schooltimetableid) REFERENCES schooltimetable(schooltimetableid)
+);
+
+
+CREATE TABLE musicteachingrels (
+    musicteacherid INT NOT NULL,
+    studentid INT NOT NULL,
+    PRIMARY KEY (musicteacherid, studentid),
+    FOREIGN KEY (musicteacherid) REFERENCES musicteachers(musicteacherid),
+    FOREIGN KEY (studentid) REFERENCES students(studentid)
+);
+
+CREATE TABLE schoolteachingrels (
+    schoolteacherid INT NOT NULL,
+    studentid INT NOT NULL,
+    PRIMARY KEY (schoolteacherid, studentid),
+    FOREIGN KEY (schoolteacherid) REFERENCES schoolteachers(schoolteacherid),
+    FOREIGN KEY (studentid) REFERENCES students(studentid)
+);
+
+CREATE TABLE schooltimetables (
+    schooltimetableid INT PRIMARY KEY AUTO_INCREMENT,
+    weekrepeat INT DEFAULT 2,
+);
+
+CREATE TABLE musictimetables (
+    musictimetableid INT PRIMARY KEY AUTO_INCREMENT,
+    weekrepeat INT DEFAULT 2
+);
+
+
+CREATE TABLE musiclessons (
+    musiclessonsid INT PRIMARY KEY AUTO_INCREMENT,
+    teacherid INT,
+    name VARCHAR(50),
+    start DATETIME,
+    end DATETIME,
+    timetableid INT
+    FOREIGN KEY (teacherid) REFERENCES musicteachers(musicteacherid),
+    FOREIGN KEY (timetableid) REFERENCES musictimetables(musictimetableid),
+);
+
+CREATE TABLE schoollessons (
+    schoollessonid INT PRIMARY KEY AUTO_INCREMENT,
+    teacherid INT,
+    name VARCHAR(50),
+    start DATETIME,
+    end DATETIME,
+    timetableid INT
+    FOREIGN KEY (teacherid) REFERENCES schoolteachers(schoolteacherid),
+    FOREIGN KEY (timetableid) REFERENCES schooltimetables(musictimetableid),
+);
+
+CREATE TABLE lessonreqs (
+    requestid INT PRIMARY KEY AUTO_INCREMENT,
+    studentid INT NOT NULL,
+    musicteacherid INT NOT NULL,
+    name VARCHAR(50),
+    FOREIGN KEY (studentid) REFERENCES students(studentid),
+    FOREIGN KEY (musicteacherid) REFERENCES musicteachers(musicteacherid)
+);
+
+CREATE TABLE notifications (
+    notificationid INT PRIMARY KEY AUTO_INCREMENT,
+    userid INT NOT NULL,
+    title VARCHAR(255) DEFAULT "Untitled",
+    message VARCHAR(1000),
+    notificationtime DATETIME,
+    FOREIGN KEY (userid) REFERENCES users(userid),
+);

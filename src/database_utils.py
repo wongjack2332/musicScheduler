@@ -14,6 +14,13 @@ def get_connection():
     return connection
 
 
+def run_sql(cursor, statement):
+    try:
+        cursor.execute(statement)
+    except pymysql.err.OperationalError:
+        print("skipped, error in execution")
+
+
 def close_connection(connection):
     connection.close()
 
