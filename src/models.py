@@ -38,7 +38,6 @@ class Student(User):
 
 @dataclass(kw_only=True)
 class Lesson:
-    lessonid: int
     title: Optional[str] = None
     start: Optional[datetime] = None
     end: Optional[datetime] = None
@@ -56,12 +55,13 @@ class SchoolLesson(Lesson):
     schoollessonid: int
     schoolteacherid: Optional[int] = None
     schoolteacher: Optional['SchoolTeacher'] = None
+    importance: Optional[int] = None
 
 
 @dataclass(kw_only=True)
 class Timetable:
-    timetableid: int
     weekrepeat: Optional[int] = None
+    lessons: Optional[dict[int, Lesson]] = field(default_factory=dict)
 
 
 @dataclass(kw_only=True)

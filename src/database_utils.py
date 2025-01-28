@@ -12,8 +12,7 @@ def get_connection():
     connection = pymysql.connect(host=HOST, user=USER, password=PASSWORD,
                                  db=DATABASE_NAME, cursorclass=pymysql.cursors.DictCursor)
 
-    cursor = connection.cursor()
-    return connection, cursor
+    return connection
 
 
 def run_sql(cursor, statement):
@@ -21,6 +20,7 @@ def run_sql(cursor, statement):
         cursor.execute(statement)
     except pymysql.err.OperationalError:
         print("skipped, error in execution")
+        return list()
 
     return cursor.fetchall()
 
@@ -30,8 +30,4 @@ def close_connection(connection):
 
 
 if __name__ == "__main__":
-    connection, cursor = get_connection()
-
-    print(run_sql(cursor, "INSERT INTO users VALUES ()"))
-
-    close_connection(connection)
+    pass
