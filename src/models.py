@@ -6,112 +6,86 @@ from typing import Optional
 @dataclass(kw_only=True)
 class User:
     userid: int
-    email: str
-    firstname: str
-    lastname: str
-    user_type: Optional[str] = field(default=None)
-
-    def check_usertype(self):
-        if self.user_type not in [None, "Student", "MusicTeacher", "SchoolTeacher"]:
-            raise ValueError("Invalid user type")
+    email: Optional[str] = None
+    firstname: Optional[str] = None
+    lastname: Optional[str] = None
+    usertype: Optional[str] = None
 
 
 @dataclass(kw_only=True)
 class MusicTeacher(User):
     musicteacherid: int
-    musictimetableid: int
+    musictimetableid: Optional[int] = None
     musictimetable: Optional['MusicTimetable'] = None
-
-    def __post_init__(self):
-        super().check_usertype()
-        self.user_type = "MusicTeacher"
 
 
 @dataclass(kw_only=True)
 class SchoolTeacher(User):
     schoolteacherid: int
-    schooltimetableid: int
+    schooltimetableid: Optional[int] = None
     schooltimetable: Optional['SchoolTimetable'] = None
-
-    def __post_init__(self):
-        super().check_usertype()
-        self.user_type = "SchoolTeacher"
 
 
 @dataclass(kw_only=True)
 class Student(User):
     studentid: int
-    year: int
-    schooltimetableid: int
+    year: Optional[int] = None
+    schooltimetableid: Optional[int] = None
     schooltimetable: Optional['SchoolTimetable'] = None
-    schoolteachers: dict[int, Optional[SchoolTeacher]
-                         ] = field(default_factory=dict)
-    musictimetableid: int
+    musictimetableid: Optional[int] = None
     musictimetable: Optional['MusicTimetable'] = None
 
-    def __post_init__(self):
-        super().check_usertype()
-        self.user_type = "Student"
-        if self.year < 7 or self.year > 13:
-            raise ValueError("Invalid school year")
 
-
-@dataclass
-class Timetable:
-    weekrepeat: int
-    lessons: dict[int, Optional['MusicLesson'] |
-                  Optional['SchoolLesson']] = field(default_factory=dict)
-
-
-@dataclass
-class SchoolTimetable:
-    schooltimetableid: int
-    lessons: dict[int, Optional['SchoolLesson']] = field(default_factory=dict)
-
-
-@dataclass
-class MusicTimetable:
-    musictimetableid: int
-    lessons: dict[int, Optional['MusicLesson']] = field(default_factory=dict)
-
-
-@dataclass
+@dataclass(kw_only=True)
 class Lesson:
-    title: str
-    start: datetime
-    end: datetime
+    lessonid: int
+    title: Optional[str] = None
+    start: Optional[datetime] = None
+    end: Optional[datetime] = None
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MusicLesson(Lesson):
     musiclessonid: int
-    musicteacherid: int
-    musicteacher: Optional[MusicTeacher] = None
-    weekrepeat: int = 2
+    musicteacherid: Optional[int] = None
+    musicteacher: Optional['MusicTeacher'] = None
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SchoolLesson(Lesson):
     schoollessonid: int
-    schoolteacherid: int
-    schoolteacher: Optional[SchoolTeacher] = None
-    weekrepeat: int = 2
+    schoolteacherid: Optional[int] = None
+    schoolteacher: Optional['SchoolTeacher'] = None
+
+
+@dataclass(kw_only=True)
+class Timetable:
+    timetableid: int
+    weekrepeat: Optional[int] = None
+
+
+@dataclass(kw_only=True)
+class MusicTimetable(Timetable):
+    musictimetableid: int
+
+
+@dataclass(kw_only=True)
+class SchoolTimetable(Timetable):
+    schooltimetableid: int
 
 
 @dataclass(kw_only=True)
 class LessonRequest:
     requestid: int
-    studentid: int
-    student: Optional[Student] = None
-    musicteacherid: int
-    musicteacher: Optional[MusicTeacher] = None
-    name: str
+    studentid: Optional[int] = None
+    musicteacherid: Optional[int] = None
+    name: Optional[str] = None
 
 
 @dataclass(kw_only=True)
 class Notification:
     notificationid: int
-    userid: int
-    title: str = "Untitled"
-    message: str
-    notificationtime: datetime
+    userid: Optional[int] = None
+    title: Optional[str] = None
+    message: Optional[str] = None
+    notificationtime: Optional[datetime] = None
