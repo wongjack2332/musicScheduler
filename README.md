@@ -40,4 +40,4 @@ waitress-serve --port=5000 main:app
 
 
 ### contributors:
-- Jack Wong, Duy Nyugen, Joon Kang, Jiaming Tang
+- Jack Wong, Duy Nguyen, Joon Kang, Jiaming Tang
