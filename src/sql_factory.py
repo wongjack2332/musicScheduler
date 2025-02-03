@@ -6,6 +6,7 @@ from database_utils import get_connection, run_sql, close_connection
 from models import User, Student, MusicTeacher, SchoolTeacher
 from models import Timetable, SchoolTimetable, MusicTimetable
 from models import Lesson, SchoolLesson, MusicLesson
+from models import LessonRequest
 
 
 class UserFactory:
@@ -142,9 +143,28 @@ class LessonFactory:
         return lesson
 
 
+class LessonRequestFactory:
+    def __init__(self, connection):
+        self.connection = connection
+        self.cursor = self.connection.cursor()
+
+    def sql_create(self):
+        sql = "INSERT INTO lessonreqs VALUES ()"
+        run_sql(self.cursor, sql)
+        result = run_sql(self.cursor, "SELECT LAST_INSERT_ID()")
+        request = LessonRequest(requestid=result[0]['LAST_INSERT_ID()'])
+        return request
+
+    def sql_get(self, idx: int):
+        sql = f"SELECT * FROM lessonreqs WHERE requestid = {idx}"
+
+        res = run_sql(self.cursor, sql)
+        if len(res) != 1:
+            raise LookupError("duplicate or missing uid")
+        return LessonRequest(**res[0])
+
+
 if __name__ == "__main__":
     connection = get_connection()
-    lesson = LessonFactory(connection).sql_get("SchoolLesson", 1)
-    print(LessonFactory(connection).sql_create("MusicLesson"))
-    print(lesson)
+    print(LessonRequestFactory(connection).sql_create())
     close_connection(connection)
