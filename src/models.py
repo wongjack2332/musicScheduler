@@ -41,7 +41,6 @@ class Lesson:
     name: Optional[str] = None
     start: Optional[datetime] = None
     end: Optional[datetime] = None
-    timetableid: Optional[int] = None
 
 
 @dataclass(kw_only=True)
