@@ -21,7 +21,7 @@ def test_student(userid, email, firstname, lastname, year, studentid, schooltime
                       studentid=studentid, schooltimetableid=schooltimetableid, musictimetableid=musictimetableid)
 
     assert student.email == email
-    assert student.user_type == "Student"
+    assert student.usertype == "Student"
     assert student.year == year
     assert student.studentid == studentid
     assert student.schooltimetableid == schooltimetableid
@@ -39,7 +39,7 @@ def test_music_teacher(userid, email, firstname, lastname, musicteacherid, music
                                  musicteacherid=musicteacherid, musictimetableid=musictimetableid)
 
     assert music_teacher.email == email
-    assert music_teacher.user_type == "MusicTeacher"
+    assert music_teacher.usertype == "MusicTeacher"
     assert music_teacher.musicteacherid == musicteacherid
     assert music_teacher.musictimetableid == musictimetableid
 
@@ -55,6 +55,6 @@ def test_school_teacher(userid, email, firstname, lastname, schoolteacherid, sch
                                    schoolteacherid=schoolteacherid, schooltimetableid=schooltimetableid)
 
     assert school_teacher.email == email
-    assert school_teacher.user_type == "SchoolTeacher"
+    assert school_teacher.usertype == "SchoolTeacher"
     assert school_teacher.schoolteacherid == schoolteacherid
     assert school_teacher.schooltimetableid == schooltimetableid

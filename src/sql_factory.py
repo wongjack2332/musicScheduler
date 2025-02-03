@@ -144,6 +144,7 @@ class LessonFactory:
 
 if __name__ == "__main__":
     connection = get_connection()
-    lesson = LessonFactory(connection).sql_create("SchoolLesson")
+    lesson = LessonFactory(connection).sql_get("SchoolLesson", 1)
+    print(LessonFactory(connection).sql_create("MusicLesson"))
     print(lesson)
     close_connection(connection)

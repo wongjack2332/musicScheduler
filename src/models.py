@@ -38,9 +38,10 @@ class Student(User):
 
 @dataclass(kw_only=True)
 class Lesson:
-    title: Optional[str] = None
+    name: Optional[str] = None
     start: Optional[datetime] = None
     end: Optional[datetime] = None
+    timetableid: Optional[int] = None
 
 
 @dataclass(kw_only=True)

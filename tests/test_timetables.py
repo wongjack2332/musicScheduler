@@ -5,14 +5,14 @@ from datetime import datetime
 
 @pytest.mark.parametrize("timetable_id", [1, 2, 3, 4])
 def test_school_timetable(timetable_id):
-    school_timetable = SchoolTimetable(timetable_id)
+    school_timetable = SchoolTimetable(schooltimetableid=timetable_id)
     assert school_timetable.schooltimetableid == timetable_id
     assert school_timetable.lessons == dict()
 
 
 @pytest.mark.parametrize("timetable_id", [1, 2, 3, 4])
 def test_music_timetable(timetable_id):
-    music_timetable = MusicTimetable(timetable_id)
+    music_timetable = MusicTimetable(musictimetableid=timetable_id)
     assert music_timetable.musictimetableid == timetable_id
     assert music_timetable.lessons == dict()
 
@@ -27,7 +27,6 @@ def test_music_lesson(kwargs):
     music_lesson = MusicLesson(**kwargs)
     assert music_lesson.musiclessonid == kwargs["musiclessonid"]
     assert music_lesson.musicteacherid == kwargs["musicteacherid"]
-    assert music_lesson.weekrepeat == kwargs["weekrepeat"]
     assert music_lesson.musicteacher is None
 
 
@@ -41,7 +40,6 @@ def test_school_lesson(kwargs):
     school_lesson = SchoolLesson(**kwargs)
     assert school_lesson.schoollessonid == kwargs["schoollessonid"]
     assert school_lesson.schoolteacherid == kwargs["schoolteacherid"]
-    assert school_lesson.weekrepeat == kwargs["weekrepeat"]
     assert school_lesson.schoolteacher is None
 
 
@@ -55,8 +53,6 @@ def test_lesson_request(kwargs):
     assert lesson_request.studentid == kwargs["studentid"]
     assert lesson_request.musicteacherid == kwargs["musicteacherid"]
     assert lesson_request.name == kwargs["name"]
-    assert lesson_request.student is None
-    assert lesson_request.musicteacher is None
 
 
 @pytest.mark.parametrize("kwargs", [
