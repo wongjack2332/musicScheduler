@@ -88,7 +88,22 @@ class TimetableFactory:
         dct = run_sql(self.cursor, sql)
         if len(dct) != 1:
             raise LookupError("duplicate or missing uid")
-        return self.type_to_obj[timetabletype](**dct[0])
+        timetable = self.type_to_obj[timetabletype](**dct[0])
+        if timetabletype == "SchoolTimetable":
+            lesson_name = "SchoolLesson"
+
+        elif timetabletype == "MusicTimetable":
+            lesson_name = "MusicLesson"
+
+        sql = f"SELECT {timetabletype}id FROM {
+            lesson_name}s WHERE {timetabletype}id = {idx}"
+        dct = run_sql(self.cursor, sql)
+
+        for lesson in dct:
+            timetable.lessons[lesson[f"{timetabletype.lower()}id"]] = self.sql_get(
+                lesson_name, lesson[f"{timetabletype.lower()}id"])
+
+        return timetable
 
     def sql_create(self, timetabletype: str = "SchoolTimetable"):
         if timetabletype not in self.type_to_obj:

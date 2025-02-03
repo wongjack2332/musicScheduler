@@ -63,6 +63,11 @@ class Timetable:
     weekrepeat: Optional[int] = None
     lessons: Optional[dict[int, Lesson]] = field(default_factory=dict)
 
+    def get_lessons(self) -> list[Lesson]:
+        if not self.lessons:
+            return list()
+        return sorted(self.lessons.values(), key=lambda x: x.start)
+
 
 @dataclass(kw_only=True)
 class MusicTimetable(Timetable):
