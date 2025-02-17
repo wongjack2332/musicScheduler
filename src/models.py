@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Optional
+from types import FunctionType
+from typing import Generator, Optional
 
 
 @dataclass(kw_only=True)
@@ -39,15 +40,14 @@ class Student(User):
 @dataclass(kw_only=True)
 class Lesson:
     name: Optional[str] = None
-    start: Optional[datetime] = None
-    end: Optional[datetime] = None
+    start: datetime = datetime(1, 1, 1)
+    end: datetime = datetime(1, 1, 1)
 
 
 @dataclass(kw_only=True)
 class MusicLesson(Lesson):
     musiclessonid: int
     musicteacherid: Optional[int] = None
-    musicteacher: Optional['MusicTeacher'] = None
 
 
 @dataclass(kw_only=True)
@@ -63,10 +63,13 @@ class Timetable:
     weekrepeat: Optional[int] = None
     lessons: Optional[dict[int, Lesson]] = field(default_factory=dict)
 
-    def get_lessons(self) -> list[Lesson]:
+    def get_lessons(self):
         if not self.lessons:
-            return list()
-        return sorted(self.lessons.values(), key=lambda x: x.start)
+            return None
+
+        lst = sorted(self.lessons.values(), key=lambda x: x.start)
+        for i in lst:
+            yield i
 
 
 @dataclass(kw_only=True)
