@@ -1,5 +1,5 @@
 from os import close
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from cryptography.fernet import Fernet
 import bcrypt
@@ -46,9 +46,14 @@ def user_load(userid):
 
 
 @app.route("/")
-@login_required
 def homepage():
     return render_template("index.html")
+
+
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    return render_template("dashboard.html")
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -72,14 +77,15 @@ def signup():
 
         login_user(user)
         db.close_connection(connection)
-        return redirect('/')
+        return redirect('/dashboard')
     else:
+        if current_user.is_authenticated:
+            return redirect('/dashboard')
         return render_template("register.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-
     if request.method == 'POST':
 
         connection = db.get_connection()
@@ -91,7 +97,7 @@ def login():
             user = UserFactory(connection).sql_from_username(username)
             login_user(user)
             connection.close()
-            return redirect('/')
+            return redirect('/dashboard')
 
         else:
             flash("Invalid username or password", "error")
@@ -101,10 +107,20 @@ def login():
         #     print('boo')
         #     flash("error in decrypting password")
         #     return redirect('/login')
-    else:
-        return render_template("login.html")
+
+    print(current_user.is_authenticated)
+    if current_user.is_authenticated:
+        return redirect('/dashboard')
+    return render_template("login.html")
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/login')
 
 
 db.close_connection(connection)
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    context = ('local.crt', 'local.key')
+    app.run(debug=True, host="0.0.0.0", ssl_context='adhoc')

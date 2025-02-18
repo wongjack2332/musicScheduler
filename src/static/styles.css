@@ -12,15 +12,33 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
     font-size: 12px;
-    display: block;
-    padding: 0;
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
     margin: 0;
     background-color: var(--light-blue);
+    padding: 1.5em;
+    color: var(--black);
 }
 
-#login-button {
-    display: block
+header {
+    height: 100%;
+    width: 12%;
+    box-sizing: border-box;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: top;
+    margin-right: 10px;
+    border-radius: 10px;
+    padding: 1.2em;
+    box-shadow: var(--box-shadow-default);
 }
 
 main {
@@ -28,10 +46,39 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 90%;
 }
 
+.main-page {
+    box-sizing: border-box;
+    height: 100%;
+    padding: 1em;
+    border-radius: 10px;
+    flex-grow: 1;
+    background-color: var(--white);
+    box-shadow: var(--box-shadow-default)
+}
 
+hr {
+    height: 1px;
+    border: none;
+    background-color: lightgray;
+    margin: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--black);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+img {
+    height: 15px;
+    width: 15px;
+    padding: 0.5em;
+}
 
 form {
     display: flex;
@@ -71,7 +118,7 @@ input[type="submit"] {
     margin-top: 20px;
     display: block;
     /* Make button a block element */
-    font-weight: bold;
+    font-weight: 500;
     font-size: 1.25em;
     padding: 0.8em;
     width: 150px;
@@ -91,7 +138,7 @@ h1 {
 .signup-button {
     display: block;
     background-color: var(--black);
-    font-weight: bold;
+    font-weight: 500;
     color: #DDD;
     font-size: 1.25em;
     width: 125px;
@@ -112,6 +159,7 @@ h1 {
 
 .select-box>select {
     display: inline-block;
+    padding-inline: 0.5em;
     font-family: Montserrat;
     background-color: var(--white);
     border: none;
@@ -135,4 +183,46 @@ input:hover {
 .messages {
     padding: 0.5em;
     display: block;
+}
+
+.account-icon {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.3em;
+    align-items: center;
+    padding: 1em 0em;
+}
+
+
+.account-icon>img {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    padding-right: 1em;
+}
+
+.upcoming-lessons {
+    height: 60%;
+}
+
+.lesson-card {
+    background-color: var(--blue);
+    padding: 1em;
+    border-radius: 10px;
+    color: var(--white)
+}
+
+.time {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.sign-out {
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.teacher {
+    font-size: 1.2em;
+    font-weight: bold;
 }

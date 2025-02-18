@@ -1,0 +1,61 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
+</head>
+<body>
+    <header>
+        <a href="" class="account-icon">
+            <img src="{{url_for('static', filename='img/account.svg')}}" alt="account-icon" width=45 height=45>
+            <span>User Name</span>
+        </a>
+        <hr>
+        <a href="" class="dashboard">
+            <img src="{{url_for('static', filename='img/dashboard.svg')}}" alt="dashboard-icon">
+            <p>Dashboard</p>
+        </a>
+        <a href="" class="timetable">
+            <img src="{{url_for('static', filename='img/whiteboard.svg')}}" alt="timetable">
+            <p>My School Timetable</p>
+        </a>
+        <a href="" class="music-timetable">
+            <img src="{{url_for('static', filename='img/music_note.svg')}}" alt="music">
+            <p>My Music Timetable</p>
+        </a>
+        <a href="" class="notification">
+            <img src="{{url_for('static', filename='img/notifications.svg')}}" alt="notification">
+            <p>Notifications</p>
+        </a>
+        <a href="" class="preferences">
+            <img src="{{url_for('static', filename='img/preferences.svg')}}" alt="preferences">
+            <p>Preferences</p>
+        </a>
+        <a href="" class="help">
+            <img src="{{url_for('static', filename='img/help.svg')}}" alt="help">
+            <p>Help</p>
+        </a>
+
+        <hr>
+
+        <div class="upcoming-lessons">
+        <p class="upcoming">upcoming music lessons</p>
+        <div class="lesson-card">
+            <span class="time">12:30-13:00</span>
+            <span class="date">12/5/2025</span>
+            <p class="teacher">Mr Smith</p>
+            <p class="instrument">Piano</p>
+        </div>
+        </div>
+        <a href="{{ url_for('logout')}}" class="sign-out">
+            <img src="{{url_for('static', filename='img/sign_out.svg')}}" alt="sign-out">
+            <p>Sign Out</p>
+        </a>
+    </header>
+
+    <main class="main-page">
+
+    </main>
+</body>
+</html>
