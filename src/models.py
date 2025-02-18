@@ -2,15 +2,20 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from types import FunctionType
 from typing import Generator, Optional
+from flask_login import UserMixin
 
 
 @dataclass(kw_only=True)
-class User:
+class User(UserMixin):
     userid: int
+    password: Optional[str] = None
     email: Optional[str] = None
     firstname: Optional[str] = None
     lastname: Optional[str] = None
     usertype: Optional[str] = None
+
+    def get_id(self):
+        return self.userid
 
 
 @dataclass(kw_only=True)

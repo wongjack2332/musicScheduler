@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat');
+
+:root {
+    --blue: #398CF9;
+    --blue-hover: #398cf9af;
+    --white: #f6f6f6;
+    --black: #333;
+    --black-hover: #33333398;
+    --light-blue: #CAEEF5;
+    --box-shadow-default: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    display: block;
+    padding: 0;
+    margin: 0;
+    background-color: var(--light-blue);
+}
+
+#login-button {
+    display: block
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+}
+
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Ensure form elements are centered */
+}
+
+input {
+    display: block;
+    font-family: 'Montserrat';
+    border-radius: 10px;
+    border: none;
+    padding: 1em;
+    width: 320px;
+    margin: 0.5em;
+    box-shadow: var(--box-shadow-default);
+    background-color: var(--white);
+    transition-duration: .5s;
+}
+
+input[type="text"]:hover,
+input[type="password"]:hover {
+    background-color: #ffffffa2;
+    transition-duration: .5s;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+button,
+input[type="submit"] {
+    margin-top: 20px;
+    display: block;
+    /* Make button a block element */
+    font-weight: bold;
+    font-size: 1.25em;
+    padding: 0.8em;
+    width: 150px;
+    /* Optional width */
+    text-align: center;
+    /* Center the text inside the button */
+    background-color: var(--blue);
+    box-shadow: var(--box-shadow-default)
+}
+
+h1 {
+    font-size: 2.5em;
+    font-weight: medium;
+    padding: 1.5em;
+}
+
+.signup-button {
+    display: block;
+    background-color: var(--black);
+    font-weight: bold;
+    color: #DDD;
+    font-size: 1.25em;
+    width: 125px;
+    text-align: center;
+    box-shadow: var(--box-shadow-default);
+    padding: 0.8em;
+    text-decoration: none;
+    border-radius: 10px;
+    margin: -10px;
+    transition-duration: .5s;
+}
+
+.select-box {
+    padding: 0.8em;
+    font-size: 1.2em;
+    display: block;
+}
+
+.select-box>select {
+    display: inline-block;
+    font-family: Montserrat;
+    background-color: var(--white);
+    border: none;
+    border-radius: 5px;
+}
+
+input:focus {
+    border: none;
+    outline: none;
+}
+
+input:hover {
+    background-color: var(--blue-hover)
+}
+
+.signup-button:hover {
+    background-color: var(--black-hover);
+    transition-duration: 0.5s;
+}
+
+.messages {
+    padding: 0.5em;
+    display: block;
+}

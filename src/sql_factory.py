@@ -21,6 +21,19 @@ class UserFactory:
         self.cursor = connection.cursor()
         self.connection = connection
 
+    def is_user(self, username):
+        sql = "SELECT * FROM users WHERE email = '%s'" % (username)
+
+        return len(run_sql(self.cursor, sql)) > 0
+
+    def sql_from_username(self, username):
+        sql = "SELECT userid FROM users WHERE email = '%s'" % (username)
+        t = run_sql(self.cursor, sql)
+        if len(t) != 1:
+            raise LookupError("duplicate or missing email")
+
+        return self.sql_get(t[0]['userid'])
+
     def sql_get(self, userid: int):
 
         self.userid = userid
@@ -31,10 +44,11 @@ class UserFactory:
             raise LookupError("duplicate uid")
 
         user = user[0]
+        print(user)
         user = dict(user, **self.get_user_type(user['usertype']))
-        del user['password']
-        user_type = user['usertype'].title()  # different names for user types
-
+        # different names for user types
+        user['usertype'] = user['usertype'].title()
+        user_type = user['usertype']
         if self.type_to_obj.get(user_type) is not None:
             self.user = self.type_to_obj[user_type](**user)
         return self.user
@@ -50,8 +64,8 @@ class UserFactory:
         if usertype not in ["Student", "MusicTeacher", "SchoolTeacher"]:
             raise TypeError("Invalid user type")
 
-        create_user = "INSERT INTO users VALUES ()"
-
+        create_user = "INSERT INTO users(usertype) VALUES ('%s')" % (usertype)
+        print(create_user)
         run_sql(self.cursor, create_user)
         result = run_sql(self.cursor, "SELECT LAST_INSERT_ID()")
         self.userid = result[0]['LAST_INSERT_ID()']
@@ -60,13 +74,55 @@ class UserFactory:
             userid=self.userid, usertype=usertype, **self.create_usertype(usertype))
 
         self.connection.commit()
-        close_connection(self.connection)
         return user
 
     def create_usertype(self, usertype: str):
         sql = f"INSERT INTO {usertype}s (userid) VALUES ({self.userid})"
         run_sql(self.cursor, sql)
         return {f'{usertype.lower()}id': run_sql(self.cursor, f"SELECT LAST_INSERT_ID()")[0]['LAST_INSERT_ID()']}
+
+    def sql_write(self, user: Student | MusicTeacher | SchoolTeacher):
+        usertype = user.usertype
+        sql_users = f"""UPDATE Users
+        SET email = {repr(user.email) if user.email is not None else 'NULL'},
+        firstname = {repr(user.firstname) if user.firstname is not None else 'NULL'},
+        lastname = {repr(user.lastname) if user.lastname is not None else 'NULL'},
+        usertype = {repr(user.usertype) if user.usertype is not None else 'NULL'},
+        password = {repr(user.password)}
+        WHERE userid = {user.userid}
+        """
+        print(sql_users)
+        run_sql(self.cursor, sql_users)
+        self.connection.commit()
+
+        if usertype == 'Student':
+            student: Student = user
+            sql = f"""UPDATE {usertype}s
+            SET year = {user.year or 'NULL'},
+            schooltimetableid = {user.schooltimetableid or 'NULL'},
+            musictimetableid = {user.musictimetableid or 'NULL'},
+            userid = {user.userid}
+            WHERE studentid = {student.studentid}
+            """
+
+        elif usertype == 'MusicTeacher':
+            musicteacher: MusicTeacher = user
+            sql = f"""UPDATE {usertype}s
+            SET musictimetableid = {user.musictimetableid},
+            userid = {user.userid}
+            WHERE musicteacherid = {musicteacher.musicteacherid}
+            """
+
+        elif usertype == 'SchoolTeacher':
+            schoolteacher: SchoolTeacher = user
+            sql = f"""UPDATE {usertype}s
+            SET schooltimetableid = {user.schooltimetableid},
+            userid = {user.userid}
+            WHERE schoolteacherid = {schoolteacher.schoolteacherid}
+            """
+        print(sql)
+        run_sql(self.cursor, sql)
+        self.connection.commit()
 
 
 class LessonFactory:
@@ -111,8 +167,8 @@ class LessonFactory:
         if lesson_type == 'SchoolLesson':
             sql = f"""UPDATE {lesson_type}s
             SET name = {repr(lesson.name) if lesson.name is not None else 'NULL'},
-            start = '{lesson.start.strftime('%Y-%m-%d %H:%M:%S')}',
-            end = '{lesson.end.strftime('%Y-%m-%d %H:%M:%S')}',
+            start = '{lesson.start.strftime(' % Y-%m-%d % H: % M: % S')}',
+            end = '{lesson.end.strftime(' % Y-%m-%d % H: % M: % S')}',
             schoolteacherid = {lesson.schoolteacherid or 'NULL'},
             importance = {lesson.importance or 'NULL'},
             schooltimetableid = {timetableid or 'NULL'}
@@ -122,8 +178,8 @@ class LessonFactory:
         elif lesson_type == 'MusicLesson':
             sql = f"""UPDATE {lesson_type}s
             SET name = {repr(lesson.name) if lesson.name is not None else 'NULL'},
-            start = '{lesson.start.strftime('%Y-%m-%d %H:%M:%S')}',
-            end = '{lesson.end.strftime('%Y-%m-%d %H:%M:%S')}',
+            start = '{lesson.start.strftime(' % Y-%m-%d % H: % M: % S')}',
+            end = '{lesson.end.strftime(' % Y-%m-%d % H: % M: % S')}',
             musicteacherid = {lesson.musicteacherid or 'NULL'},
             musictimetableid = {timetableid or 'NULL'}
             WHERE {lesson_type.lower()}id = {lesson.musiclessonid}"""
@@ -235,15 +291,7 @@ class LessonRequestFactory:
 
 if __name__ == "__main__":
     connection = get_connection()
-
-    tfac = TimetableFactory(connection)
-    timetable = tfac.sql_get("MusicTimetable", 2)
-    lesson = LessonFactory(connection).sql_create(lessontype='MusicLesson')
-    timetable.lessons = {
-        lesson.musiclessonid: lesson
-    }
-    print(timetable.lessons)
-
-    tfac.sql_write(timetable, "MusicTimetable")
+    ufac = UserFactory(connection)
+    print(ufac.sql_create(usertype='Student'))
 
     close_connection(connection)

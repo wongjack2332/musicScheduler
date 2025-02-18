@@ -1,0 +1,29 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login_style.css') }}">
+</head>
+<body>
+    <main>
+    <h1>Create Your Account</h1>
+    <form method="POST">
+        <input type="text" name="username" placeholder="Email" class="input-box">
+        <input type="text" name="username-confirm" placeholder="Confirm Email" class="input-box">
+        <input type="password" name="password" placeholder="Password" class="input-box">
+        <input type="password" name="password-confirm" placeholder="Confirm Password" class="input-box">
+        <div class="select-box">
+        <label for="usertype">I am a:</label>
+        <select name="usertype" id="usertype">
+            <option value="Student">Student</option>
+            <option value="MusicTeacher">Music Teacher</option>
+            <option value="SchoolTeacher">SchoolTeacher</option>
+        </select>
+        </div>
+        <input type="submit" class="login-button" value="Sign up">
+    </form>
+    <a href="{{ url_for('login')}}" class="signup-button">Log in</a>
+    </main>
+</body>
+</html>

@@ -2,9 +2,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login_style.css') }}">
 </head>
 <body>
-    
+    <main>
+    <h1>Login to Your Account</h1>
+
+    <div class="container">
+    <form method="POST" name="login">
+        <!-- a hidden login-form field to identify this individual form -->
+        <input type="hidden" name="login-form">
+
+
+        <input type="text" name="username" placeholder="Email" class="input-box">
+        <input type="password" name="password" placeholder="Password" class="input-box">
+        <input type="submit" class="login-button" value="Log in">
+    </form>
+    <a href="{{ url_for('signup')}}" class="signup-button">Sign Up</a>
+</div>
+    <div class="messages">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+                {% for category, message in messages %}
+                    <p style="color: red;">{{ message }}</p>  <!-- You can style this message -->
+                {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+    </main>
 </body>
 </html>
