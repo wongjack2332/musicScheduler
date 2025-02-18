@@ -37,6 +37,7 @@ waitress-serve --port=5000 main:app
 - python Waitress
 - python PyMySql
 - python cryptography
+- python bcrypt
 
 
 ### contributors:
